@@ -1,12 +1,12 @@
 :root {
   --color-primary: black;
-  --color-primary-light: #cccccc;
+  --color-primary-light: #ccc;
   --color-secondary: #f2f2f2;
   --color-accent: #a6a6a6;
   --color-neutral-beige: #e2e2e2;
   --color-whatever: #808080;
-  --font-primary: Roboto, sans-serif;
-  --font-secondary: Merriweather, serif;
+  --font-primary: roboto, sans-serif;
+  --font-secondary: merriweather, serif;
 }
 
 html {
