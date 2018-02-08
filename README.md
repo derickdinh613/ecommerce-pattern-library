@@ -13,10 +13,10 @@ fonts:
 
     The secondary typeface should be used for headings and buttons.
 
-    colors:
-      primary: The primary color represents the night and the dark of the night where nocturnal creatures reside. Use it for headers and footers.
+colors:
+  primary: The primary color represents the night and the dark of the night where nocturnal creatures reside. Use it for headers and footers.
 
-      secondary: The secondary color are just shades of the primary color. Use for sub headers and buttons.
+  secondary: The secondary color are just shades of the primary color. Use for sub headers and buttons.
 
-    This is the company where we sell logo printed clothing.
+   This is the company where we sell logo printed clothing.
 ---
