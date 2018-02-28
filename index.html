@@ -820,6 +820,10 @@
       </nav>
   </div>
 
+      <div class="pattern-desc milli island" >
+        <div class="max-length"><p>The basic card should on be for information, it could include a button, but is never a link itself.</p>
+</div>
+      </div>
 
   
 
@@ -850,6 +854,10 @@
                 </li>
             </ul>
         </div>
+          <div class="pattern-desc milli island" style="">
+            <div class="max-length"><p>The basic card should on be for information, it could include a button, but is never a link itself.</p>
+</div>
+          </div>
 
       <div class="pattern-examples pad-t-1-2 pad-b-1-2" style="">
         <div class="gutter-2 pad-t-1-2 pad-b-1-2">
@@ -878,7 +886,10 @@
                   <svg><use xlink:href="#icon-copy"></use></svg>
                 </i>
               </button>
-              <code><pre id="cards-basic-card-code-sample-copy-chunk">
+              <code><pre id="cards-basic-card-code-sample-copy-chunk">&lt;div class="card island-1-2"&gt;
+  &lt;h2 class="push-1-4">This is a card&lt;/h2>
+  &lt;p class="push-0">Lorem ipsum dolor sit amet, consectetuer adipiscing elit&lt;/p>
+&lt;/div>
 </pre></code>
             </div>
           </div>
@@ -911,6 +922,10 @@
                 </li>
             </ul>
         </div>
+          <div class="pattern-desc milli island" style="">
+            <div class="max-length"><p>The icon card is generally used for calls-to-action on the homepage or highlights on inside pages.</p>
+</div>
+          </div>
 
       <div class="pattern-examples pad-t-1-2 pad-b-1-2" style="">
         <div class="gutter-2 pad-t-1-2 pad-b-1-2">
@@ -1023,24 +1038,10 @@
                   <svg><use xlink:href="#icon-copy"></use></svg>
                 </i>
               </button>
-              <code><pre id="forms-basic-textbox-code-sample-copy-chunk">&lt;form class="max-length island" method="post" action="#" novalidate=""&gt;
-  &lt;div class="error-message error-message-highlighted push island-1-2" role="alert" aria-live="assertive">
-    &lt;h3 class="push-0">
-        &lt;i class="icon i-32">&lt;svg>&lt;use xlink:href="images/icons.svg#error"/>&lt;/svg>&lt;/i>
-        &lt;span class="icon-label">&lt;/span>
-      &lt;/h3>
-  &lt;/div>
-
-  &lt;div class="push-1-2">
-    &lt;label for="name">Basic Input&lt;/label>
-    &lt;input id="name" required aria-describedby="name-error">
-    &lt;p class="error-message milli island-1-4 push-0" id="name-error">
-      &lt;i class="icon i-16">&lt;svg>&lt;use xlink:href="images/icons.svg#error"/>&lt;/svg>&lt;/i>
-      &lt;span class="icon-label">&lt;/span>
-    &lt;/p>
-  &lt;/div>
-
-&lt;/form>
+              <code><pre id="forms-basic-textbox-code-sample-copy-chunk">&lt;div class="push-1-2"&gt;
+  &lt;label for="name">Basic Input&lt;/label>
+  &lt;input id="name" name="name" type="text">
+&lt;/div>
 </pre></code>
             </div>
           </div>
@@ -1101,13 +1102,13 @@
                   <svg><use xlink:href="#icon-copy"></use></svg>
                 </i>
               </button>
-              <code><pre id="forms-checkbox-code-sample-copy-chunk">&lt;div class="push-1-2 pad-t-1-2"&gt;
-  &lt;input type="checkbox" id="agree" required aria-describedby="agree-error">
-  &lt;label for="agree">Input&lt;/label>
-  &lt;p class="error-message milli island-1-4 push-0" id="agree-error">
-    &lt;i class="icon i-16">&lt;svg>&lt;use xlink:href="images/icons.svg#error"/>&lt;/svg>&lt;/i>
-    &lt;span class="icon-label">&lt;/span>
-  &lt;/p>
+              <code><pre id="forms-checkbox-code-sample-copy-chunk">&lt;div class="pad-t-1-2"&gt;
+  &lt;input type="checkbox" id="agree">
+  &lt;label for="agree">Agree&lt;/label>
+&lt;/div>
+&lt;div class="ib push-r">
+  &lt;input type="checkbox" id="disagree">
+  &lt;label for="disagree">Disagree&lt;/label>
 &lt;/div>
 </pre></code>
             </div>
