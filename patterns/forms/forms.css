@@ -2,7 +2,20 @@ html {
   font-family: var(--font-secondary);
 }
 
-input,
-input[type="checkbox"] + label::before {
-  border: 2px solid var(--secondary-dark);
+input[type="checkbox"] {
+  border: 2px solid var(--color-secondary);
+  border-radius: 5px;
+  background-color: var(--color-secondary-light);
+}
+
+input[type="radio"] {
+  border: 2px solid var(--color-secondary);
+  border-radius: 5px;
+  background-color: var(--color-secondary-light);
+}
+
+input {
+  border: 2px solid var(--color-secondary);
+  border-radius: 5px;
+  background-color: var(--color-secondary-light);
 }

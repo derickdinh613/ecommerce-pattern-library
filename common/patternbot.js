@@ -348,9 +348,9 @@ const patternBotIncludes = function (manifest) {
 /** 
  * Patternbot library manifest
  * /Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library
- * @version 1519840748443
+ * @version 1519913421090
  */
-const patternManifest_1519840748443 = {
+const patternManifest_1519913421090 = {
   "commonInfo": {
     "modulifier": [
       "responsive",
@@ -641,6 +641,18 @@ const patternManifest_1519840748443 = {
           "namePretty": "Checkbox",
           "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/forms/checkbox.html",
           "localPath": "patterns/forms/checkbox.html"
+        },
+        {
+          "name": "drop-down",
+          "namePretty": "Drop down",
+          "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/forms/drop-down.html",
+          "localPath": "patterns/forms/drop-down.html"
+        },
+        {
+          "name": "radio",
+          "namePretty": "Radio",
+          "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/forms/radio.html",
+          "localPath": "patterns/forms/radio.html"
         }
       ],
       "md": [],
@@ -674,5 +686,5 @@ const patternManifest_1519840748443 = {
   }
 };
 
-patternBotIncludes(patternManifest_1519840748443);
+patternBotIncludes(patternManifest_1519913421090);
 }());
