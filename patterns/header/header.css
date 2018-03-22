@@ -1,0 +1,7 @@
+.masthead {
+  background-color: var(--color-primary);
+}
+
+h1 {
+  color: var(--color-secondary-light);
+}

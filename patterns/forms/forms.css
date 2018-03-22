@@ -19,3 +19,9 @@ input {
   border-radius: 5px;
   background-color: var(--color-secondary-light);
 }
+
+.error-message {
+  display: none;
+  background-color: #fee;
+  color: #c33;
+}

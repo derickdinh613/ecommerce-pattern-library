@@ -86,11 +86,17 @@ const patternBotIncludes = function (manifest) {
     `},
   };
 
+  let jsFileQueue = {
+    sync: [],
+    async: [],
+  };
   let downloadedAssets = {};
 
   const downloadHandler = function (e) {
+    const id = (e.target.hasAttribute('src')) ? e.target.getAttribute('src') : e.target.getAttribute('href');
+
     e.target.removeEventListener('load', downloadHandler);
-    downloadedAssets[e.target.getAttribute('href')] = true;
+    downloadedAssets[id] = true;
   };
 
   const findRootPath = function () {
@@ -101,7 +107,6 @@ const patternBotIncludes = function (manifest) {
     for (i = 0; i < t; i++) {
       if (rootMatcher.test(allScripts[i].src)) {
         return allScripts[i].src.split(rootMatcher)[0];
-        break;
       }
     }
   };
@@ -116,7 +121,7 @@ const patternBotIncludes = function (manifest) {
     newLink.addEventListener('load', downloadHandler);
 
     document.head.appendChild(newLink);
-  }
+  };
 
   const bindAllCssFiles = function (rootPath) {
     if (manifest.commonInfo && manifest.commonInfo.readme && manifest.commonInfo.readme.attributes &&  manifest.commonInfo.readme.attributes.fontUrl) {
@@ -139,11 +144,59 @@ const patternBotIncludes = function (manifest) {
     });
   };
 
+  const queueAllJsFiles = function (rootPath) {
+    if (manifest.patternLibFiles && manifest.patternLibFiles.js) {
+      manifest.patternLibFiles.js.forEach((js) => {
+        const href = `..${manifest.config.commonFolder}/${js.filename}`;
+
+        downloadedAssets[href] = false;
+        jsFileQueue.sync.push(href);
+      });
+    }
+
+    manifest.userPatterns.forEach((pattern) => {
+      if (!pattern.js) return;
+
+      pattern.js.forEach((js) => {
+        const href = `../${js.localPath}`;
+
+        downloadedAssets[href] = false;
+        jsFileQueue.async.push(href);
+      });
+    });
+  };
+
+  const addJsFile = function (href) {
+    const newScript = document.createElement('script');
+
+    newScript.setAttribute('src', href);
+    document.body.appendChild(newScript);
+
+    return newScript;
+  };
+
+  const bindNextJsFile = function (e) {
+    if (e && e.target) {
+      e.target.removeEventListener('load', bindNextJsFile);
+      downloadedAssets[e.target.getAttribute('src')] = true;
+    }
+
+    if (jsFileQueue.sync.length > 0) {
+      const scriptTag = addJsFile(jsFileQueue.sync.shift());
+      scriptTag.addEventListener('load', bindNextJsFile);
+    } else {
+      jsFileQueue.async.forEach((js) => {
+        const scriptTag = addJsFile(js);
+        scriptTag.addEventListener('load', downloadHandler);
+      });
+    }
+  };
+
   const getPatternInfo = function (patternElem) {
     let patternInfoJson;
     const data = patternElem.innerText.trim();
 
-    if (!data) return {}
+    if (!data) return {};
 
     try {
       patternInfoJson = JSON.parse(data);
@@ -172,9 +225,50 @@ const patternBotIncludes = function (manifest) {
     };
   };
 
+  const correctHrefPaths = function (html) {
+    const hrefSearch = /href\s*=\s*"\.\.\/\.\.\//g;
+    const srcSearch = /src\s*=\s*"\.\.\/\.\.\//g;
+    const urlSearch = /url\((["']*)\.\.\/\.\.\//g;
+
+    return html
+      .replace(hrefSearch, 'href="../')
+      .replace(srcSearch, 'src="../')
+      .replace(urlSearch, 'url($1../')
+    ;
+  };
+
+  const buildAccurateSelectorFromElem = function (elem) {
+    let theSelector = elem.tagName.toLowerCase();
+
+    if (elem.id) theSelector += `#${elem.id}`;
+    if (elem.getAttribute('role')) theSelector += `[role="${elem.getAttribute('role')}"]`;
+    if (elem.classList.length > 0) theSelector += `.${[].join.call(elem.classList, '.')}`;
+
+    theSelector += ':first-of-type';
+
+    return theSelector;
+  };
+
+  /**
+   * This is an ugly mess: Blink does not properly render SVGs when using DOMParser alone.
+   * But, I need DOMParser to determine the correct element to extract.
+   *
+   * I only want to get the first element within the `<body>` tag of the loaded document.
+   * This dumps the whole, messy, HTML document into a temporary `<div>`,
+   * then uses the DOMParser version, of the same element, to create an accurate selector,
+   * then finds that single element in the temporary `<div>` using the selector and returns it.
+   */
   const htmlStringToElem = function (html) {
+    let theSelector = '';
+    const tmpDoc = document.createElement('div');
+    const finalTmpDoc = document.createElement('div');
     const doc = (new DOMParser()).parseFromString(html, 'text/html');
-    return doc.body;
+
+    tmpDoc.innerHTML = html;
+    theSelector = buildAccurateSelectorFromElem(doc.body.firstElementChild);
+    finalTmpDoc.appendChild(tmpDoc.querySelector(theSelector));
+
+    return finalTmpDoc;
   };
 
   const replaceElementValue = function (elem, sel, data) {
@@ -197,7 +291,7 @@ const patternBotIncludes = function (manifest) {
 
     if (!patternDetails.html) return;
 
-    patternOutElem = htmlStringToElem(patternDetails.html);
+    patternOutElem = htmlStringToElem(correctHrefPaths(patternDetails.html));
     patternData = getPatternInfo(patternElem);
 
     Object.keys(patternData).forEach((sel) => {
@@ -234,7 +328,7 @@ const patternBotIncludes = function (manifest) {
   };
 
   const hideLoadingScreen = function () {
-    const allDownloadedInterval = setInterval(() => {
+    let allDownloadedInterval = setInterval(() => {
       if (Object.values(downloadedAssets).includes(false)) return;
 
       clearInterval(allDownloadedInterval);
@@ -272,7 +366,7 @@ const patternBotIncludes = function (manifest) {
           if (resp.status >= 200 && resp.status <= 299) {
             return resp.text();
           } else {
-            console.group('Cannot location pattern');
+            console.group('Cannot locate pattern');
             console.log(resp.url);
             console.log(`Error ${resp.status}: ${resp.statusText}`);
             console.groupEnd();
@@ -328,11 +422,13 @@ const patternBotIncludes = function (manifest) {
 
     rootPath = findRootPath();
     bindAllCssFiles(rootPath);
+    queueAllJsFiles(rootPath);
     allPatternTags = findAllPatternTags();
     allPatterns = constructAllPatterns(rootPath, allPatternTags);
 
     loadAllPatterns(allPatterns).then((allLoadedPatterns) => {
       renderAllPatterns(allPatternTags, allLoadedPatterns);
+      bindNextJsFile();
       hideLoadingScreen();
     }).catch((e) => {
       console.group('Pattern load error');
@@ -348,9 +444,9 @@ const patternBotIncludes = function (manifest) {
 /** 
  * Patternbot library manifest
  * /Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library
- * @version 1519913421090
+ * @version 03121fecd81ebc6d2fca1c0ce27676c76ee11329
  */
-const patternManifest_1519913421090 = {
+const patternManifest_03121fecd81ebc6d2fca1c0ce27676c76ee11329 = {
   "commonInfo": {
     "modulifier": [
       "responsive",
@@ -519,7 +615,9 @@ const patternManifest_1519913421090 = {
           "primary": 0,
           "opposite": 255
         }
-      }
+      },
+      "bodyRaw": "\nThis is the company where we sell logo printed clothing.\n",
+      "bodyBasic": "This is the company where we sell logo printed clothing."
     },
     "icons": [
       "shopping-cart",
@@ -554,9 +652,20 @@ const patternManifest_1519913421090 = {
     "patterns": [
       "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/buttons",
       "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/cards",
-      "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/forms"
+      "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/footer",
+      "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/forms",
+      "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/header",
+      "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/navigations",
+      "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/sections"
     ],
-    "pages": []
+    "pages": [
+      {
+        "name": "home.html",
+        "namePretty": "Home",
+        "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/pages/home.html"
+      }
+    ],
+    "js": []
   },
   "userPatterns": [
     {
@@ -567,6 +676,7 @@ const patternManifest_1519913421090 = {
         {
           "name": "buttons",
           "namePretty": "Buttons",
+          "filename": "buttons",
           "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/buttons/buttons.html",
           "localPath": "patterns/buttons/buttons.html"
         }
@@ -575,6 +685,7 @@ const patternManifest_1519913421090 = {
         {
           "name": "readme",
           "namePretty": "Readme",
+          "filename": "README",
           "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/buttons/README.md",
           "localPath": "patterns/buttons/README.md"
         }
@@ -583,10 +694,12 @@ const patternManifest_1519913421090 = {
         {
           "name": "buttons",
           "namePretty": "Buttons",
+          "filename": "buttons",
           "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/buttons/buttons.css",
           "localPath": "patterns/buttons/buttons.css"
         }
-      ]
+      ],
+      "js": []
     },
     {
       "name": "cards",
@@ -596,6 +709,7 @@ const patternManifest_1519913421090 = {
         {
           "name": "basic-card",
           "namePretty": "Basic card",
+          "filename": "basic-card",
           "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/cards/basic-card.html",
           "localPath": "patterns/cards/basic-card.html",
           "readme": {}
@@ -603,6 +717,7 @@ const patternManifest_1519913421090 = {
         {
           "name": "icon-card",
           "namePretty": "Icon card",
+          "filename": "icon-card",
           "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/cards/icon-card.html",
           "localPath": "patterns/cards/icon-card.html",
           "readme": {}
@@ -612,6 +727,7 @@ const patternManifest_1519913421090 = {
         {
           "name": "readme",
           "namePretty": "Readme",
+          "filename": "README",
           "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/cards/README.md",
           "localPath": "patterns/cards/README.md"
         }
@@ -620,10 +736,37 @@ const patternManifest_1519913421090 = {
         {
           "name": "cards",
           "namePretty": "Cards",
+          "filename": "cards",
           "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/cards/cards.css",
           "localPath": "patterns/cards/cards.css"
         }
-      ]
+      ],
+      "js": []
+    },
+    {
+      "name": "footer",
+      "namePretty": "Footer",
+      "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/footer",
+      "html": [
+        {
+          "name": "footer",
+          "namePretty": "Footer",
+          "filename": "footer",
+          "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/footer/footer.html",
+          "localPath": "patterns/footer/footer.html"
+        }
+      ],
+      "md": [],
+      "css": [
+        {
+          "name": "footer",
+          "namePretty": "Footer",
+          "filename": "footer",
+          "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/footer/footer.css",
+          "localPath": "patterns/footer/footer.css"
+        }
+      ],
+      "js": []
     },
     {
       "name": "forms",
@@ -633,37 +776,131 @@ const patternManifest_1519913421090 = {
         {
           "name": "basic-textbox",
           "namePretty": "Basic textbox",
+          "filename": "basic-textbox",
           "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/forms/basic-textbox.html",
-          "localPath": "patterns/forms/basic-textbox.html"
+          "localPath": "patterns/forms/basic-textbox.html",
+          "readme": {}
         },
         {
           "name": "checkbox",
           "namePretty": "Checkbox",
+          "filename": "checkbox",
           "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/forms/checkbox.html",
-          "localPath": "patterns/forms/checkbox.html"
+          "localPath": "patterns/forms/checkbox.html",
+          "readme": {}
         },
         {
           "name": "drop-down",
           "namePretty": "Drop down",
+          "filename": "drop-down",
           "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/forms/drop-down.html",
-          "localPath": "patterns/forms/drop-down.html"
+          "localPath": "patterns/forms/drop-down.html",
+          "readme": {}
         },
         {
           "name": "radio",
           "namePretty": "Radio",
+          "filename": "radio",
           "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/forms/radio.html",
-          "localPath": "patterns/forms/radio.html"
+          "localPath": "patterns/forms/radio.html",
+          "readme": {}
+        }
+      ],
+      "md": [
+        {
+          "name": "readme",
+          "namePretty": "Readme",
+          "filename": "README",
+          "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/forms/README.md",
+          "localPath": "patterns/forms/README.md"
+        }
+      ],
+      "css": [
+        {
+          "name": "forms",
+          "namePretty": "Forms",
+          "filename": "forms",
+          "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/forms/forms.css",
+          "localPath": "patterns/forms/forms.css"
+        }
+      ],
+      "js": []
+    },
+    {
+      "name": "header",
+      "namePretty": "Header",
+      "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/header",
+      "html": [
+        {
+          "name": "header",
+          "namePretty": "Header",
+          "filename": "header",
+          "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/header/header.html",
+          "localPath": "patterns/header/header.html"
         }
       ],
       "md": [],
       "css": [
         {
-          "name": "forms",
-          "namePretty": "Forms",
-          "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/forms/forms.css",
-          "localPath": "patterns/forms/forms.css"
+          "name": "header",
+          "namePretty": "Header",
+          "filename": "header",
+          "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/header/header.css",
+          "localPath": "patterns/header/header.css"
         }
-      ]
+      ],
+      "js": []
+    },
+    {
+      "name": "navigations",
+      "namePretty": "Navigations",
+      "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/navigations",
+      "html": [
+        {
+          "name": "next-previous",
+          "namePretty": "Next previous",
+          "filename": "next-previous",
+          "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/navigations/next-previous.html",
+          "localPath": "patterns/navigations/next-previous.html",
+          "readme": {}
+        }
+      ],
+      "md": [
+        {
+          "name": "readme",
+          "namePretty": "Readme",
+          "filename": "README",
+          "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/navigations/README.md",
+          "localPath": "patterns/navigations/README.md"
+        }
+      ],
+      "css": [
+        {
+          "name": "navigations",
+          "namePretty": "Navigations",
+          "filename": "navigations",
+          "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/navigations/navigations.css",
+          "localPath": "patterns/navigations/navigations.css"
+        }
+      ],
+      "js": []
+    },
+    {
+      "name": "sections",
+      "namePretty": "Sections",
+      "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/sections",
+      "html": [
+        {
+          "name": "sections",
+          "namePretty": "Sections",
+          "filename": "sections",
+          "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/sections/sections.html",
+          "localPath": "patterns/sections/sections.html"
+        }
+      ],
+      "md": [],
+      "css": [],
+      "js": []
     }
   ],
   "config": {
@@ -686,5 +923,5 @@ const patternManifest_1519913421090 = {
   }
 };
 
-patternBotIncludes(patternManifest_1519913421090);
+patternBotIncludes(patternManifest_03121fecd81ebc6d2fca1c0ce27676c76ee11329);
 }());
