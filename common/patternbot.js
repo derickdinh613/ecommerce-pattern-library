@@ -444,9 +444,9 @@ const patternBotIncludes = function (manifest) {
 /** 
  * Patternbot library manifest
  * /Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library
- * @version 03121fecd81ebc6d2fca1c0ce27676c76ee11329
+ * @version 645e7681eb70acf7be4ecb82724c4039dd17a302
  */
-const patternManifest_03121fecd81ebc6d2fca1c0ce27676c76ee11329 = {
+const patternManifest_645e7681eb70acf7be4ecb82724c4039dd17a302 = {
   "commonInfo": {
     "modulifier": [
       "responsive",
@@ -650,6 +650,7 @@ const patternManifest_03121fecd81ebc6d2fca1c0ce27676c76ee11329 = {
       "size64Local": "logo-64.svg"
     },
     "patterns": [
+      "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/banner",
       "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/buttons",
       "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/cards",
       "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/footer",
@@ -668,6 +669,39 @@ const patternManifest_03121fecd81ebc6d2fca1c0ce27676c76ee11329 = {
     "js": []
   },
   "userPatterns": [
+    {
+      "name": "banner",
+      "namePretty": "Banner",
+      "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/banner",
+      "html": [
+        {
+          "name": "banner",
+          "namePretty": "Banner",
+          "filename": "banner",
+          "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/banner/banner.html",
+          "localPath": "patterns/banner/banner.html"
+        }
+      ],
+      "md": [
+        {
+          "name": "readme",
+          "namePretty": "Readme",
+          "filename": "README",
+          "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/banner/README.md",
+          "localPath": "patterns/banner/README.md"
+        }
+      ],
+      "css": [
+        {
+          "name": "banner",
+          "namePretty": "Banner",
+          "filename": "banner",
+          "path": "/Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library/patterns/banner/banner.css",
+          "localPath": "patterns/banner/banner.css"
+        }
+      ],
+      "js": []
+    },
     {
       "name": "buttons",
       "namePretty": "Buttons",
@@ -923,5 +957,5 @@ const patternManifest_03121fecd81ebc6d2fca1c0ce27676c76ee11329 = {
   }
 };
 
-patternBotIncludes(patternManifest_03121fecd81ebc6d2fca1c0ce27676c76ee11329);
+patternBotIncludes(patternManifest_645e7681eb70acf7be4ecb82724c4039dd17a302);
 }());

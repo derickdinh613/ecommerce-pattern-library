@@ -141,6 +141,16 @@
               </a>
             </li>
               <li role="presentation">
+                <a class="gutter pad-t-1-4 pad-b-1-4 block" role="tab" aria-controls="banner" href="#banner">
+                  <div class="relative">
+                    <span>Banner</span>
+                    <i class="icon i-18 absolute pin-cr">
+                      <svg><use xlink:href="#icon-active" /></svg>
+                    </i>
+                  </div>
+                </a>
+              </li>
+              <li role="presentation">
                 <a class="gutter pad-t-1-4 pad-b-1-4 block" role="tab" aria-controls="buttons" href="#buttons">
                   <div class="relative">
                     <span>Buttons</span>
@@ -788,6 +798,92 @@
 
 </section>
 
+        <section class="pattern" id="banner" role="tabpanel" hidden aria-hidden="true" style="">
+  <div class="pattern-toolbar gutter pad-t-1-4 pad-b-1-8 relative" style="">
+    <h2 class="pattern-name exa push-1-4" style="color: #000000; font-family: roboto, sans-serif;">Banner</h2>
+        <ul class="list-group-inline gutter absolute pin-cr">
+            <li>
+              <button class="center-contents-vertical pattern-tool-btn pattern-code-btn" title="Show code" aria-label="Show code" aria-pressed="false" aria-controls="banner-banner-code-sample">
+                <i class="icon i-18">
+                  <svg><use xlink:href="#icon-code"></use></svg>
+                </i>
+              </button>
+            </li>
+            <li>
+              <button class="center-contents-vertical pattern-tool-btn pattern-include-btn" title="Copy include" aria-label="Copy include" data-copy-include-pattern="banner/banner" hidden>
+                <i class="icon i-18">
+                  <svg><use xlink:href="#icon-copy"></use></svg>
+                </i>
+              </button>
+            </li>
+            <li>
+              <a class="center-contents-vertical pattern-tool-btn pattern-pop-btn" href="patterns/banner/banner.html" target="_blank" title="Open pattern in a new tab" aria-label="Open pattern in a new tab">
+                <i class="icon i-18">
+                  <svg><use xlink:href="#icon-pop-out"></use></svg>
+                </i>
+              </a>
+            </li>
+        </ul>
+  </div>
+
+
+  
+
+    <div class="pattern-details " id="banner--banner" style="">
+
+      <div class="pattern-examples pad-t-1-2 pad-b-1-2" style="">
+        <div class="gutter-2 pad-t-1-2 pad-b-1-2">
+          <div class="resizeable-pattern relative" style="">
+            <i class="icon i-32 patternbot-iframe-loading-gears absolute pin-c"><svg><use xlink:href="#patternbot-iframe-loading-gears"></use></svg></i>
+            <iframe data-src="patterns/banner/banner.html" scrolling="no" data-inject-css=" " ></iframe>
+              <div class="resizeable-pattern-length">
+                <div class="resize-handle resize-handle-left" style="">
+                  <i class="icon i-18">
+                    <svg><use xlink:href="#icon-resize-handle" /></svg>
+                  </i>
+                </div>
+                <div class="resize-handle resize-handle-right" style="">
+                  <i class="icon i-18">
+                    <svg><use xlink:href="#icon-resize-handle" /></svg>
+                  </i>
+                </div>
+              </div>
+          </div>
+        </div>
+
+          <div class="pattern-code-wrap gutter pad-t-1-2 pad-b-1-2" hidden aria-hidden="true" id="banner-banner-code-sample" tabindex="-1">
+            <div class="pattern-code relative milli island-1-2" style="">
+              <button class="center-contents-vertical pattern-tool-btn pattern-copy-btn absolute pin-tr" title="Copy code" aria-label="Copy code" data-clipboard-target="#banner-banner-code-sample-copy-chunk" hidden>
+                <i class="icon i-18">
+                  <svg><use xlink:href="#icon-copy"></use></svg>
+                </i>
+              </button>
+              <code><pre id="banner-banner-code-sample-copy-chunk">&lt;html lang="en-ca"&gt;
+&lt;head>
+  &lt;meta charset="utf-8">
+  &lt;title>buttons&lt;/title>
+  &lt;meta name="viewport" content="width=device-width,initial-scale=1">
+  &lt;link href="../../common/modules.css" rel="stylesheet">
+  &lt;link href="../../common/grid.css" rel="stylesheet">
+  &lt;link href="../../common/type.css" rel="stylesheet">
+  &lt;link href="../../common/theme.css" rel="stylesheet">
+  &lt;link href="banner.css" rel="stylesheet">
+  &lt;link href="https://fonts.google.com/specimen/Merriweather?selection.family=Merriweather|Roboto" rel="stylesheet">
+&lt;/head>
+&lt;header>
+  &lt;div class="banner push-0 img-flex">
+    &lt;img src="../../images/banner.jpg" alt="">
+  &lt;/div>
+&lt;/header>
+&lt;/html>
+</pre></code>
+            </div>
+          </div>
+      </div>
+    </div>
+
+</section>
+
         <section class="pattern" id="buttons" role="tabpanel" hidden aria-hidden="true" style="">
   <div class="pattern-toolbar gutter pad-t-1-4 pad-b-1-8 relative" style="">
     <h2 class="pattern-name exa push-1-4" style="color: #000000; font-family: roboto, sans-serif;">Buttons</h2>
@@ -816,15 +912,6 @@
         </ul>
   </div>
 
-    <div class="pattern-desc milli island" style="">
-      <div class="max-length"><p>The buttons use our secondary colour to contrast against the white backgrounds</p>
-<ul>
-<li>The regular buttons are for cards</li>
-<li>The light buttons are for forms</li>
-<li>The ghost buttons are for banners and links</li>
-</ul>
-</div>
-    </div>
 
   
 
@@ -1013,7 +1100,7 @@
                   <svg><use xlink:href="#icon-copy"></use></svg>
                 </i>
               </button>
-              <code><pre id="cards-icon-card-code-sample-copy-chunk">&lt;div class="card text-center"&gt;
+              <code><pre id="cards-icon-card-code-sample-copy-chunk">&lt;div class="card text-center island-1-8"&gt;
   &lt;i class="icon i-128">
       &lt;svg>&lt;use xlink:href="../../images/icons.svg#shopping-cart"/>&lt;/svg>
     &lt;/i>
@@ -1494,21 +1581,21 @@
               </button>
               <code><pre id="header-header-code-sample-copy-chunk">&lt;header class="masthead header grid grid-middle island-1-2"&gt;
   &lt;div class="logo unit xs-1 s-1 m-1 l-1-4">
-    &lt;h1 class="push-0 gutter-1-4 pad-b-1-4">Nocturnal&lt;/h1>
+    &lt;h1 class="text-center push-0 gutter-1-4 pad-b-1-4">Nocturnal&lt;/h1>
   &lt;/div>
   &lt;nav class="nav unit xs-1 s-1 m-1 l-3-4">
     &lt;ul class="list-group-inline push-0">
       &lt;li class="island-1-8">
-        &lt;a class="block text-center gutter pad-t-1-4 pad-b-1-4 milli" href="#">Home&lt;/a>
+        &lt;a class="block gutter pad-t-1-4 pad-b-1-4 milli" href="#">Home&lt;/a>
       &lt;/li>
       &lt;li class="island-1-8">
-        &lt;a class="block text-center gutter pad-t-1-4 pad-b-1-4 milli" href="#">Shop&lt;/a>
+        &lt;a class="block gutter pad-t-1-4 pad-b-1-4 milli" href="#">Shop&lt;/a>
       &lt;/li>
       &lt;li class="island-1-8">
-        &lt;a class="block text-center gutter pad-t-1-4 pad-b-1-4 milli" href="#">Info&lt;/a>
+        &lt;a class="block gutter pad-t-1-4 pad-b-1-4 milli" href="#">Info&lt;/a>
       &lt;/li>
       &lt;li class="island-1-8">
-        &lt;a class="block text-center gutter pad-t-1-4 pad-b-1-4 milli" href="#">Contact&lt;/a>
+        &lt;a class="block gutter pad-t-1-4 pad-b-1-4 milli" href="#">Contact&lt;/a>
       &lt;/li>
     &lt;/ul>
   &lt;/nav>
