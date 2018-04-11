@@ -1,6 +1,6 @@
 ---
 basic-textbox: |
-  The basic textbox should on be for information, such as names and other basic information that is needed to be typed in.
+  The basic textbox should be on for information, such as names and other basic information that is needed to be typed in.
 
 drop-down: |
   The drop down menu is used for a large list of selections, ex: sizes for clothing selections.

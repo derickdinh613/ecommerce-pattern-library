@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en-ca">
+<head>
+  <meta charset="utf-8">
+  <title>Checkout</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="../common/patternbot.js" charset="utf-8"></script>
+</head>
+<body>
+  <script type="application/json" data-pattern="header/header"></script>
+  <form class="" action="index.html" method="post">
+    <fieldset>
+      <legend class="gutter giga">Billing Adress</legend>
+      <div class="grid">
+        <div class="unit xs-1 s-1 m-1-2 l-1-2 gutter">
+          <script type="application/json" data-pattern="forms/basic-textbox">
+            {
+              "label": "First name"
+            }
+          </script>
+          <script type="application/json" data-pattern="forms/basic-textbox">
+            {
+              "label": "Last Name"
+            }
+          </script>
+          <script type="application/json" data-pattern="forms/basic-textbox">
+            {
+              "label": "Adress"
+            }
+          </script>
+          <script type="application/json" data-pattern="forms/basic-textbox">
+            {
+              "label": "Apt, suite, etc."
+            }
+          </script>
+          <script type="application/json" data-pattern="forms/basic-textbox">
+            {
+              "label": "City"
+            }
+          </script>
+          <script type="application/json" data-pattern="forms/drop-down">
+            "label": "Country"
+            "select": "Select Country"
+          </script>
+          <script type="application/json" data-pattern="forms/drop-down">
+            "label": "Country"
+            "select": "Select Country"
+          </script>
+          <script type="application/json" data-pattern="forms/basic-textbox">
+            {
+              "label": "Postal code"
+            }
+          </script>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</body>
