@@ -444,9 +444,9 @@ const patternBotIncludes = function (manifest) {
 /** 
  * Patternbot library manifest
  * /Users/nicholas/Documents/School/Semester 3/Web IV/ecommerce-pattern-library-derick
- * @version b2e3f5177176dbb7f9b8a0f5e338aaee148d44c5
+ * @version d70ea25c870537440b62fe7b676ef7325a582683
  */
-const patternManifest_b2e3f5177176dbb7f9b8a0f5e338aaee148d44c5 = {
+const patternManifest_d70ea25c870537440b62fe7b676ef7325a582683 = {
   "commonInfo": {
     "modulifier": [
       "responsive",
@@ -669,6 +669,11 @@ const patternManifest_b2e3f5177176dbb7f9b8a0f5e338aaee148d44c5 = {
         "name": "home.html",
         "namePretty": "Home",
         "path": "/Users/nicholas/Documents/School/Semester 3/Web IV/ecommerce-pattern-library-derick/pages/home.html"
+      },
+      {
+        "name": "product-details.html",
+        "namePretty": "Product details",
+        "path": "/Users/nicholas/Documents/School/Semester 3/Web IV/ecommerce-pattern-library-derick/pages/product-details.html"
       },
       {
         "name": "product-list.html",
@@ -967,5 +972,5 @@ const patternManifest_b2e3f5177176dbb7f9b8a0f5e338aaee148d44c5 = {
   }
 };
 
-patternBotIncludes(patternManifest_b2e3f5177176dbb7f9b8a0f5e338aaee148d44c5);
+patternBotIncludes(patternManifest_d70ea25c870537440b62fe7b676ef7325a582683);
 }());
