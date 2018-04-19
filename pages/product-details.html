@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en-ca">
+<head>
+  <meta charset="utf-8">
+  <title>Product Details</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="../common/patternbot.js" charset="utf-8"></script>
+</head>
+<body>
+  <script type="application/json" data-pattern="header/header"></script>
+    <div class="grid">
+      <div class="unit unit-xs-1 unit-s-1 unit-m-1-2 unit-l-1-2 unit-xl-1-2 island-2">
+        <img src="../images/jersey.png" class="img-flex" alt="nocturnal branded jersey">
+      </div>
+      <div class="unit unit-xs-1 unit-s-1 unit-m-1-2 unit-l-1-2 unit-xl-1-2 island-2 grid">
+        <script type="application/json" data-pattern="sections/sections">
+          {
+            "h2": "Nocturnal Short Sleeved Jersey",
+            "p":"Made of 100% Polyester, these jerseys are light and breathable, while also offering flexibility. Made using Sublimation printing which ensures quality and long lasting designs. Nocturnal only offers the best colour quality in the business. Custom apparel takes 3-5 weeks for delivery!"
+          }
+        </script>
+        <div class="max-length">
+          <script type="application/json" data-pattern="forms/drop-down">
+            {
+              "label":"Size",
+              "option:nth-child(1)": "Select Size",
+              "option:nth-child(2)": "Small",
+              "option:nth-child(3)": "Medium",
+              "option:nth-child(4)": "Large"
+            }
+          </script>
+        </div>
+        <div class="unit-xs-1-2 unit-s-1-2 unit-m-1-3 unit-l-1-4 unit-xl-1-4 push">
+          <script type="application/json" data-pattern="forms/basic-textbox">
+            {
+              "label":"Quantity"
+            }
+          </script>
+        </div>
+        <div class="max-length push-2">
+          <script type="application/json" data-pattern="forms/basic-textbox">
+            {
+              "label":"Gamertag"
+            }
+          </script>
+        </div>
+        <div class="unit-xs-content-center unit-s-content-center">
+          <script type="application/json" data-pattern="buttons/buttons">
+            {
+              "a": "Add to Cart"
+            }
+          </script>
+        </div>
+      </div>
+    </div>
+  <script type="application/json" data-pattern="footer/footer"></script>
+</body>
+</html>
