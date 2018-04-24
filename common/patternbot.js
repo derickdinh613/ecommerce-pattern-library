@@ -446,6 +446,7 @@ const patternBotIncludes = function (manifest) {
  * /Users/derickdinh/Desktop/year 2/Semester 2 /web-dev/ecommerce-pattern-library
  * @version 5dceb303b7c9dfcd365f3724fbf9a2c8d6f1d77b
  */
+const patternManifest_5dceb303b7c9dfcd365f3724fbf9a2c8d6f1d77b = {
   "commonInfo": {
     "modulifier": [
       "responsive",
